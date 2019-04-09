@@ -12,7 +12,16 @@ na_to_zero = function(DT, excluded=NULL,included=NULL) {
     for (j in seq_len(ncol(DT))) {
       set(DT,which(is.na(DT[[j]])),j,0)
     }
-  } else if(is.null(excluded)&!is.null(include)){
+  } else if(is.null(excluded)&!is.null(included)){
+    for(j in included) {
+      set(DT,which(is.na(DT[[j]])),j,0)
+    }
+  } else if(!is.null(excluded)&is.null(included)){
     dtNames <- names(DT)
+    included <- setdiff(dtNames,excluded)
+    for(j in included) {
+      set(DT,which(is.na(DT[[j]])),j,0)
+    }
   }
 }
+
