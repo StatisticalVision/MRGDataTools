@@ -1,5 +1,3 @@
-# datatable extensions
-
 #' Break apart a long table and rebuild into a wide table
 #'
 #' \code{break_build} is a function that creates a wide-form table from a long-form table, similar
@@ -24,6 +22,10 @@
 #'                   value1=c(72,36,70,34,60,64,180,64),
 #'                   value2=c("80%","74%","70%","60%","40%","45%","65%","40%"))
 #' wide_sizes<-break_build(sizes,IDCols = c("ID1","ID2"),BCol = "measurement",ValCols = c("value1","value2"))
+#'
+#' @seealso
+#' \code{\link[data.table]{dcast}}
+#' \code{\link[data.table]{melt}}
 
 break_build <- function (df,BCol,IDCols,ValCols) {
   setkeyv(df,BCol)
@@ -37,23 +39,15 @@ break_build <- function (df,BCol,IDCols,ValCols) {
   for (bframe in NewCols) {
     #Create and store a subtable for a unique entry in bcol.
     ldt[[bframe]] = df[bframe,ColList, with=FALSE]
+    #Create syntactically valid names
+    prefixed <- make.names(paste(bframe,ValCols,sep="."))
+    oneName <- make.names(bframe)
     #Prefix the Value columns with the name of the break, unless there is only one ValCol.
-    if(length(ValCols)>1){setnames(ldt[[bframe]], ValCols, paste(bframe,ValCols,sep="."))
-      } else {setnames(ldt[[bframe]], ValCols, bframe)}
+    if(length(ValCols)>1){setnames(ldt[[bframe]], ValCols, prefixed)
+      } else {setnames(ldt[[bframe]], ValCols, oneName)}
   }
   #Recursively merge all the subtables together.
   Build<-Reduce(function(...) merge(...,by=IDCols,all=T),ldt)
   return(Build)
 }
 
-#' turn all NAs in a datatable to zero
-#'
-#' This function works on the data.table in place.
-#'
-#' @param DT a data table passed by reference.
-#' @return No return value.  The data table is changed in place.
-
-na_to_zero= function(DT) {
-  for (j in seq_len(ncol(DT)))
-    set(DT,which(is.na(DT[[j]])),j,0)
-}
