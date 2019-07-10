@@ -9,4 +9,4 @@ License: What license is it under?
 Depends:
     data.table
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1

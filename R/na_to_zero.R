@@ -3,8 +3,8 @@
 #' This function works on the data.table in place.
 #'
 #' @param DT a data table passed by reference.
-#' @param exclude a character vector of column names to exclude -all others included.
-#' @param include a character vector of column names to include -all others excluded
+#' @param excluded a character vector of column names to exclude -all others included.
+#' @param included a character vector of column names to include -all others excluded
 #' @return No return value.  The data table is changed in place.
 
 na_to_zero = function(DT, excluded=NULL,included=NULL) {
