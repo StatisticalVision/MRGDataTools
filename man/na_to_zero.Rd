@@ -9,9 +9,9 @@ na_to_zero(DT, excluded = NULL, included = NULL)
 \arguments{
 \item{DT}{a data table passed by reference.}
 
-\item{exclude}{a character vector of column names to exclude -all others included.}
+\item{excluded}{a character vector of column names to exclude -all others included.}
 
-\item{include}{a character vector of column names to include -all others excluded}
+\item{included}{a character vector of column names to include -all others excluded}
 }
 \value{
 No return value.  The data table is changed in place.
