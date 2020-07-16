@@ -26,11 +26,15 @@
 #' @seealso
 #' \code{\link[data.table]{dcast}}
 #' \code{\link[data.table]{melt}}
-
+#' @export
 break_build <- function (df,BCol,IDCols,ValCols) {
   setkeyv(df,BCol)
   #Scan the column for unique entries.  (For each entry, we will generate a sub-table.)
   NewCols <- unique(df[[BCol]]);
+  if(NA %in% NewCols){
+    warning("BCol contains NA, removing that category, rows will be lost.")
+    NewCols <- NewCols[!is.na(NewCols)]
+  }
   #An empty list that will hold a data table for each break.
   ldt <- list();
   #List of columns the information in which need to be in every sub-table.
